@@ -53,11 +53,13 @@ if (mysqli_connect_errno()) {
 
 	// month
 	$date = date("Y-m-d",strtotime("-1 month"));
-	if ($result = $mysqli->query("SELECT name,score FROM bb_afgame WHERE timestamp >= '$date' ORDER BY score DESC LIMIT 5")) {
+	if ($result = $mysqli->query("SELECT name,score FROM afgame WHERE timestamp >= '$date' ORDER BY score DESC LIMIT 5")) {
       		while($obj = $result->fetch_object()){
            	$scores_month[] = array('name'=>$obj->name, 'score'=>$obj->score);
        	}
 		$result->close();
+	} else {
+		echo "<!-- $mysqli->error -->";
 	}
 
 }
