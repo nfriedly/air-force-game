@@ -1,0 +1,41 @@
+html {
+	margin:0;
+	padding:0;
+}
+body {
+	margin:0;
+	padding:0;
+	background:#fff;
+	font-family: Arial, Helvetica;
+	font-size:10pt;
+	color: #666;
+	line-height:1.2em;
+}
+a{ color:#090;}
+
+#leftsideGame {
+	/*
+	margin-right:5px;
+	float:left;
+	*/
+	padding-right:5px;
+}
+
+#rightsideDesc {
+	width:380px;
+	padding-right:10px;
+	font-size:10pt;
+}
+
+#rightsideDesc table {
+	background-color: #ddd;
+	width:100%;
+}
+#rightsideDesc td.number {
+	text-align:right;
+}
+
+#rightsideDesc h1 {
+	color:#090;
+	margin-top:10px;
+}
