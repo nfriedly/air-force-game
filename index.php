@@ -3,14 +3,14 @@
   error_reporting(E_ALL|E_STRICT);
   ini_set('display_errors', '1');
 
-
+// get the appfog database settings
 $env = json_decode(getenv("VCAP_SERVICES"), true);
 $config = $env["mysql-5.1"][0]["credentials"];
 
 $mysqli = new mysqli($config["hostname"], $config["username"], $config["password"], $config["name"]);
 
 
-// check for scores
+// save the score if there is one
 
 if(isset( $_GET['score']) && isset($_COOKIE['name']) ){
 	$score = $_GET['score'];
@@ -21,6 +21,7 @@ if(isset( $_GET['score']) && isset($_COOKIE['name']) ){
 			$score
 		);
 		if(!$mysqli->query($query)){
+			// if it failed, try creating the database table we need
 			$first_error = $mysqli->error;
 			if(!$mysqli->query("CREATE TABLE IF NOT EXISTS `afgame` (`name` varchar(22) NOT NULL, `score` double NOT NULL, `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, KEY `timestamp` (`timestamp`))")) {
 				$mysqli->close();
@@ -42,7 +43,7 @@ if (mysqli_connect_errno()) {
 	printf("<!-- Connect failed: %s\n -->", $db->connect_error());
 }else{
 
-	// today
+	// high scores: today
 	$date = date("Y-m-d");
 	if ($result = $mysqli->query("SELECT name,score FROM afgame WHERE timestamp >= '$date' ORDER BY score DESC LIMIT 3")) {
       		while($obj = $result->fetch_object()){
@@ -51,7 +52,7 @@ if (mysqli_connect_errno()) {
 		$result->close();
 	}
 
-	// month
+	// high scores: this month
 	$date = date("Y-m-d",strtotime("-1 month"));
 	if ($result = $mysqli->query("SELECT name,score FROM afgame WHERE timestamp >= '$date' ORDER BY score DESC LIMIT 5")) {
       		while($obj = $result->fetch_object()){
@@ -710,7 +711,8 @@ Keep it away from the blue shapes or the black wall.</p>
 	
 
 	<hr />
-	<p><a href="/">Air Force Game</a> is updated and maintained by <a href="http://nfriedly.com/">Nathan Friedly of nFriedly Web Development</a>, an <a href="http://nfriedly.com/webdev/javascript">Expert node.js, JavaAcript and AJAX develer</a></p>
+	<p><a href="http://air-force-game.nfriedly.com/">Air Force Game</a> is updated and maintained by <a href="http://nfriedly.com/">Nathan Friedly of nFriedly Web Development</a>, an <a href="http://nfriedly.com/webdev/javascript">Expert node.js, JavaAcript and AJAX develer</a></p>
+	<p>The source is <a href="https://github.com/nfriedly/air-force-game">available on Github</a>.</p>
 
 	
 </td>
